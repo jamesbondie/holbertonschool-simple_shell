@@ -1,0 +1,21 @@
+.TH SIMPLE_SHELL
+.SH SHELL
+corrupt \- modify files by randomly changing bits
+.SH SYNOPSIS
+.B corrupt
+[\fB\-n\fR \fIBITS\fR]
+[\fB\-\-bits\fR \fIBITS\fR]
+.IR file ...
+.SH DESCRIPTION
+.B corrupt
+modifies files by toggling a randomly chosen bit.
+.SH OPTIONS
+.TP
+.BR \-n ", " \-\-bits =\fIBITS\fR
+Set the number of bits to modify.
+Default is one bit.
+.SH AUTHORS
+Written by Tahir Alizade <jamesalfreddie@gmail.com>
+.SH BUG REPORTS
+Report bugs to <jamesalfreddie@gmail.com>
+
