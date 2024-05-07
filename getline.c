@@ -8,7 +8,7 @@ char *line = NULL;
 size_t bufsize = 0;
 if (getline(&line,&bufsize,stdin) == -1)
 {
-	if (feod(stdin))
+	if (feof(stdin))
 	{
 	free(line);
 	exit(EXIT_SUCCESS);
