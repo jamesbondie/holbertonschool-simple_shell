@@ -3,7 +3,6 @@
 int main (int ac, char **av)
 
 {
-        // getline
         char *buffer;
         size_t bufsize = 5;
         pid_t my_pid;
