@@ -8,10 +8,7 @@ int main (int ac, char **av)
         pid_t my_pid;
         int blabla;
         buffer = malloc(bufsize*sizeof(char));
-        int a = 0;
-        int *x;
-        x = &a;i
-        while (a = 75)
+        while (1)
         {
                 my_pid = fork();
 
@@ -20,14 +17,11 @@ int main (int ac, char **av)
                 if (my_pid == 0)
                 {
                         printf("#cisfun$ ");
-                        getline(&buffer,&bufsize,stdin);
-                        if (strcmp(buffer, "exit") == 0)
-                                *x = a;
+                        getline(&buffer,&bufsize,stdin)
                         if (buffer[strlen(buffer) - 1] == '\n')
                                 buffer[strlen(buffer) - 1] = '\0';
                         char* const newenvironment[] = {NULL};
                         char *args[] = { "mini_shell", buffer, NULL };
-                        if (strcmp(
                         execve(buffer, av, newenvironment);
                 }
         }
