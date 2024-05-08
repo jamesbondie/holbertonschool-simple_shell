@@ -1,16 +1,30 @@
-#include "main.h"
-extern char** environ;
-int main (int ac, char **av)
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
 {
-        char *args[] = {"/bin/ls", NULL};
-        if(isatty(0) && ac > 0)
-        {
-                printf("asdf");
-        }
-        else
-        {
-                if(execve(args[0], args, environ) == -1)
-                        perror(av[0]);
-        }
-        return 0;
+    char *argv[] = { "/bin/ls", NULL };
+    char *envp[] =
+    {
+        "HOME=/",
+        "PATH=/bin:/usr/bin",
+        "TZ=UTC0",
+        "USER=beelzebub",
+        "LOGNAME=tarzan",
+        NULL
+    };
+
+    if (isatty(STDIN_FILENO))
+    {
+        fprintf(stderr, "Connected to a terminal\n");
+    }
+    else
+    {
+        execve(argv[0], argv, envp);
+        perror("execve"); 
+        return -1;
+    }
+
+    return 0;
 }
