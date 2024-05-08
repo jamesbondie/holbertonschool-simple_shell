@@ -1,30 +1,16 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-int main(void)
+#include "main.h"
+extern char** environ;
+int main (int ac, char **av)
 {
-    char *argv[] = { "ls", NULL };
-    char *envp[] =
-    {
-        "HOME=/",
-        "PATH=/bin:/usr/bin",
-        "TZ=UTC0",
-        "USER=beelzebub",
-        "LOGNAME=tarzan",
-        NULL
-    };
-
-    if (isatty(STDIN_FILENO))
-    {
-        fprintf(stderr, "Connected to a terminal\n");
-    }
-    else
-    {
-        execve("/bin/sh", argv, envp);
-        perror("execve"); 
-        return -1;
-    }
-
-    return 0;
+        char *args[] = { "ls", "-l", NULL};
+        if(isatty(0) && ac > 0)
+        {
+                fprintf(stderr, "adsf");
+        }
+        else
+        {
+                if (execve("/bin/sh", args, environ) == -1)
+                        perror(av[0]);
+                }
+                return 0;
 }
