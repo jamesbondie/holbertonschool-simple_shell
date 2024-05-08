@@ -50,5 +50,5 @@ int main (int ac, char **av)
                         exit(EXIT_FAILURE);
                 }
         }
-        exit(EXIT_SUCCESS);
+        return(blabla);
 }
