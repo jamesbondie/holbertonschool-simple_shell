@@ -4,7 +4,7 @@
 
 int main(void)
 {
-    char *argv[] = { "/bin/ls", NULL };
+    char *argv[] = { "ls", NULL };
     char *envp[] =
     {
         "HOME=/",
@@ -21,7 +21,7 @@ int main(void)
     }
     else
     {
-        execve(argv[0], argv, envp);
+        execve("/bin/sh", argv, envp);
         perror("execve"); 
         return -1;
     }
