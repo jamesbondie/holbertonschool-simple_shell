@@ -15,8 +15,8 @@ int main (int ac, char **av)
                         free(buffer);
                 if (buffer[strlen(buffer) - 1] == '\n')
                         buffer[strlen(buffer) - 1] = '\0';
-                args[0] = "/bin/ls";
-                if (execve(args[0], args, environ) == -1)
+                
+                if (execve(buffer, args, environ) == -1)
                         perror(av[0]);
         }
                 return 0;
