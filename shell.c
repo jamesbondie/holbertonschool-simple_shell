@@ -9,7 +9,7 @@ int main (int ac, char **av)
         }
         else
         {
-                if (execve("/bin/sh", args, environ) == -1)
+                if (execve("/bin/ls", args, environ) == -1)
                         perror(av[0]);
                 }
                 return 0;
