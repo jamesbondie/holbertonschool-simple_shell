@@ -44,13 +44,14 @@ int main(int ac, char** av) {
                 i++;
             }
             args[i] = NULL;
-
+            if (strchr(args[0], ' ') != 0)
+                args[0] = NULL;
             my_pid = fork();
             if (my_pid == -1) {
                 perror("fork");
                 exit(EXIT_FAILURE);
             } else if (my_pid == 0) {
-                if (strchr(args[0], '/') != 0) {
+                {
                     if (execve(args[0], args, environ) == -1) {
                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                         free(buffer);
