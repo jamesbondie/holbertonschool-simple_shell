@@ -3,7 +3,7 @@ int interactive(char *buffer, size_t bufsize, char **args, char *av)
 {
         char *token;
         pid_t my_pid;
-        int i, status, j;
+        int i = 0, status, j;
         while (getline(&buffer, &bufsize, stdin) != -1)
         {
                 i = 0;
@@ -40,19 +40,20 @@ int interactive(char *buffer, size_t bufsize, char **args, char *av)
                                 fprintf(stderr, "%s: 1: %s: not found\n", av, buffer);
                                 free(buffer);
                                 for (j = 0; j < i; j++)
-                                free(args[j]);
+                                        free(args[j]);
                                 exit(EXIT_FAILURE);
                         }
                 }
                 else
                         wait(&status);
-                return (i);
         }
+        return (i);
 }
+
 int main(int ac, char **av)
 {
         size_t bufsize = 3;
-        int i, j;
+        int b = 0, j;
         char *args[64], *buffer = malloc(bufsize * sizeof(char));
         if (!buffer)
         {
@@ -64,9 +65,9 @@ int main(int ac, char **av)
                 printf("asdfsdf");
         else
         {
-                i = interactive(buffer, bufsize, args, av[0]);
+                b = interactive(buffer, bufsize, args, av[0]);
         }
-        for (j = 0; j < i; j++)
+        for (j = 0; j < b; j++)
                 free(args[j]);
         free(buffer);
         return (0);
