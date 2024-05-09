@@ -1,5 +1,17 @@
 #include "main.h"
 extern char** environ;
+void space_remover(char *str)
+{
+        int i = 0;
+        int j = 0;
+        int len = strlen(str);
+        for (i = j = 0; i < len; i++)
+        {
+                if (str[i] != ' ')
+                    str[j++] = str[i];
+        }
+        str[j] = '\0';
+}
 int main (int ac, char **av)
 {
     pid_t my_pid;
@@ -31,10 +43,12 @@ int main (int ac, char **av)
                 buffer[strlen(buffer) - 1] = '\0';
             
             token = strtok(buffer, " \n");
+            space_remover(token);
             while (token != NULL)
             {
                     args[i] = token;
                     token = strtok(NULL, " \n");
+                    space_remover(token);
                     i++;  
             }
             args[i] = NULL;   
