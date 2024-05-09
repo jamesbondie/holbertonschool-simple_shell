@@ -47,7 +47,7 @@ int main (int ac, char **av)
             }
             else if (my_pid == 0)
             {
-                if (strchr(args[0], ' ') == 0)
+                if (strchr(args[0], '/') != 0)
                 {
                     if (execve(args[0], args, environ) == -1)
                     {
