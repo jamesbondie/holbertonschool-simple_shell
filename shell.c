@@ -58,7 +58,11 @@ int main (int ac, char **av)
     }
     for (j = 0; j < i; j++)
     {
-        free(args[j]);
+        if (args[j] != NULL)
+        {
+            free(args[j]);
+            args[j] = NULL;
+        }
     }
     free(buffer);
     return 0;
