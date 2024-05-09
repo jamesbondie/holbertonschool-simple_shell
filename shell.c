@@ -43,12 +43,10 @@ int main (int ac, char **av)
                 buffer[strlen(buffer) - 1] = '\0';
             
             token = strtok(buffer, " \n");
-            space_remover(token);
             while (token != NULL)
             {
                     args[i] = token;
                     token = strtok(NULL, " \n");
-                    space_remover(token);
                     i++;  
             }
             args[i] = NULL;   
@@ -61,6 +59,7 @@ int main (int ac, char **av)
             }
             else if (my_pid == 0)
             {
+                space_remover(args[0]);
                 if (execve(args[0], args, environ) == -1)
                 {
                     fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
