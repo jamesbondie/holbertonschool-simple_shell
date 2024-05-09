@@ -8,7 +8,7 @@ int main (int ac, char **av)
     char *args[64];
     char *buffer = malloc(bufsize * sizeof(char));
     char *token;    
-    int i = 0, j;
+    int i = 0;
     
     if (!buffer)
     {
@@ -33,11 +33,11 @@ int main (int ac, char **av)
             token = strtok(buffer, " \n");
             while (token != NULL)
             {
-                    args[i] = strdup(token);
+                    args[i] = token;
                     token = strtok(NULL, " \n");
                     i++;  
             }
-            args[i] = NULL;    
+            args[i] = NULL;   
             my_pid = fork();
             if (my_pid == -1)
             {
@@ -60,11 +60,6 @@ int main (int ac, char **av)
                 wait(&status); 
             }
         }
-    }
-    for (j = 0; args[j] != NULL; j++)
-    {
-            free(args[j]);
-            args[j] = NULL;
     }
     free(buffer);
     return 0;
