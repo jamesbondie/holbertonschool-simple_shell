@@ -1,5 +1,51 @@
 #include "main.h"
+void _getenv(const char* name, char *args[64])
+{
+    extern char** environ;
+    int j = 0;
+    size_t i;
 
+    for (i = 0; environ[i] != NULL; i++)
+    {
+        char* env_var = strdup(environ[i]);
+        char* token = strtok(env_var, "=");
+
+        if (token != NULL && strcmp(token, name) == 0)
+        {
+            token = strtok(NULL, ":");
+
+            while (token != NULL)
+            {
+                args[j] = strdup(token), j++;
+                token = strtok(NULL, ":");
+            }
+            args[j] = NULL;
+            break;
+        }
+        free(env_var);
+    }
+}
+
+void args_yazan(char *arv[64], char *kod_tutan)
+{
+    char *args[64];
+    char* nese = strdup(kod_tutan);
+    int i = 0, j = 0;
+        _getenv("PATH", args);
+    while (args[i])
+    {
+        strcat(args[i], "/");
+        strcat(args[i], nese);
+        if (access(args[i], X_OK) == 0)
+        {
+            arv[j] = strdup(args[i]);
+            break;
+            j++;
+        }
+        i++;
+    }
+    free(nese);
+}
 int main(int ac, char **av)
 {
         pid_t my_pid;
@@ -51,6 +97,10 @@ int main(int ac, char **av)
                         }
                         else if (my_pid == 0)
                         {
+                                if (strchr(args[0], '/') == 0)
+                                {
+                                        args_yazan(args, args[0]);
+                                }
                                 if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
