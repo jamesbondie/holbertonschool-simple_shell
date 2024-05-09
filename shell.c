@@ -27,7 +27,7 @@ int main (int ac, char **av)
             printf("asdfsdf");
     }
     else
-    {
+    { 
         while (getline(&buffer, &bufsize, stdin) != -1)
         {
             space_remover(buffer);
