@@ -1,5 +1,5 @@
 #include "main.h"
-void interactive(char *buffer, size_t bufsize, char **args, char *av)
+int interactive(char *buffer, size_t bufsize, char **args, char *av)
 {
         char *token;
         pid_t my_pid;
@@ -46,14 +46,13 @@ void interactive(char *buffer, size_t bufsize, char **args, char *av)
                 }
                 else
                         wait(&status);
-                for (j = 0; j < i; j++)
-                        free(args[j]);
-                free(buffer);
+                return (i);
         }
 }
 int main(int ac, char **av)
 {
         size_t bufsize = 3;
+        int i, j;
         char *args[64], *buffer = malloc(bufsize * sizeof(char));
         if (!buffer)
         {
@@ -65,7 +64,10 @@ int main(int ac, char **av)
                 printf("asdfsdf");
         else
         {
-                interactive(buffer, bufsize, args, av[0]);
-        } 
+                i = interactive(buffer, bufsize, args, av[0]);
+        }
+        for (j = 0; j < i; j++)
+                free(args[j]);
+        free(buffer);
         return (0);
 }
