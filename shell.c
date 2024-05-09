@@ -28,12 +28,14 @@ int main (int ac, char **av)
             {
                 perror("fork");
                 exit(EXIT_FAILURE);
+                
             }
             else if (my_pid == 0)
             {
                 if (execve(args[0], args, environ) == -1)
                 {
                     fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                    free(buffer);
                     exit(EXIT_FAILURE);
                 }
             }
@@ -44,6 +46,6 @@ int main (int ac, char **av)
             }
         }
     }
-    
+    free(buffer);
     return 0;
 }
