@@ -19,6 +19,9 @@ int main (int ac, char **av)
     int status;
     char *args[2];
     char *buffer = malloc(bufsize * sizeof(char));
+    char *token;    
+    int i = 0;
+    
     args[0] = NULL;
     args[1] = NULL;
 
@@ -30,10 +33,18 @@ int main (int ac, char **av)
     { 
         while (getline(&buffer, &bufsize, stdin) != -1)
         {
+            i = 0;
             if (buffer[strlen(buffer) - 1] == '\n')
                 buffer[strlen(buffer) - 1] = '\0';
-            space_remover(buffer);
-            args[0] = buffer;
+            
+            token = strtok(buffer, " \n");
+            while (token != NULL)
+            {
+                    args[i] = strdup(token);
+                    token = strtok(NULL, " \n");
+                    i++;  
+            }
+            args[i] = NULL;    
             my_pid = fork();
             if (my_pid == -1)
             {
