@@ -1,17 +1,5 @@
 #include "main.h"
 extern char** environ;
-void space_remover(char *str)
-{
-        int i = 0;
-        int j = 0;
-        int len = strlen(str);
-        for (i = j = 0; i < len; i++)
-        {
-                if (str[i] != ' ')
-                    str[j++] = str[i];
-        }
-        str[j] = '\0';
-}
 int main (int ac, char **av)
 {
     pid_t my_pid;
@@ -59,12 +47,14 @@ int main (int ac, char **av)
             }
             else if (my_pid == 0)
             {
-                space_remover(args[0]);
-                if (execve(args[0], args, environ) == -1)
+                if (strchr(args[0], ' ') == 0)
                 {
-                    fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
-                    free(buffer);
-                    exit(EXIT_FAILURE);
+                    if (execve(args[0], args, environ) == -1)
+                    {
+                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                        free(buffer);
+                        exit(EXIT_FAILURE);
+                    }
                 }
             }
                 
