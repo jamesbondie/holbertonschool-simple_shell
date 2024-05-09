@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include "main.h"
 
 extern char** environ;
 
@@ -36,7 +31,7 @@ int main(int ac, char** av) {
             if(token == NULL)
             {
                 free(buffer);
-                exit(EXIT_FAILURE);
+                exit(EXIT_SUCCESS);
             }
             while (token != NULL)
             {
