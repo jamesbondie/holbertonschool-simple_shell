@@ -1,6 +1,17 @@
 #include "main.h"
 extern char** environ;
-
+void space_remover(char *str)
+{
+        int i = 0;
+        int j = 0;
+        int len = strlen(str);
+        for (i = j = 0; i < len; i++)
+        {
+                if (str[i] != ' ')
+                    str[j++] = str[i];
+        }
+        str[j] = '\0';
+}
 int main (int ac, char **av)
 {
     pid_t my_pid;
@@ -19,6 +30,7 @@ int main (int ac, char **av)
     {
         while (getline(&buffer, &bufsize, stdin) != -1)
         {
+            space_remover(buffer);
             if (buffer[strlen(buffer) - 1] == '\n')
                 buffer[strlen(buffer) - 1] = '\0';
 
