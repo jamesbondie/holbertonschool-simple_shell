@@ -1,5 +1,5 @@
 #include "main.h"
-void interactive(char *buffer, size_t bufsize, char *args[64], char *av)
+void interactive(char *buffer, size_t bufsize, char **args, char *av)
 {
         char *token;
         pid_t my_pid;
@@ -45,9 +45,10 @@ void interactive(char *buffer, size_t bufsize, char *args[64], char *av)
                         }
                 }
                 else
-                wait(&status);
+                        wait(&status);
                 for (j = 0; j < i; j++)
-                free(args[j]);
+                        free(args[j]);
+                free(buffer);
         }
 }
 int main(int ac, char **av)
@@ -65,7 +66,6 @@ int main(int ac, char **av)
         else
         {
                 interactive(buffer, bufsize, args, av[0]);
-        }
-        free(buffer); 
+        } 
         return (0);
 }
