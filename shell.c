@@ -30,10 +30,9 @@ int main (int ac, char **av)
     { 
         while (getline(&buffer, &bufsize, stdin) != -1)
         {
-            space_remover(buffer);
             if (buffer[strlen(buffer) - 1] == '\n')
                 buffer[strlen(buffer) - 1] = '\0';
-
+            space_remover(buffer);
             args[0] = buffer;
             my_pid = fork();
             if (my_pid == -1)
