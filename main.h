@@ -8,4 +8,5 @@
 #include <stdlib.h>
 #include <unistd.h>
 void space_remover(char *str);
+extern char **environ;
 #endif
