@@ -15,7 +15,6 @@ int main(int ac, char** av) {
     char* buffer = malloc(bufsize * sizeof(char));
     char* token;
     int i = 0, j;
-
     if (!buffer) {
         perror("malloc");
         exit(EXIT_FAILURE);
@@ -32,9 +31,15 @@ int main(int ac, char** av) {
             if (buffer[strlen(buffer) - 1] == '\n') {
                 buffer[strlen(buffer) - 1] = '\0';
             }
-
+            
             token = strtok(buffer, " \n");
-            while (token != NULL) {
+            if(token == NULL)
+            {
+                free(buffer);
+                exit(EXIT_FAILURE);
+            }
+            while (token != NULL)
+            {
                 args[i] = strdup(token);
                 if (!args[i]) {
                     perror("strdup");
@@ -44,14 +49,12 @@ int main(int ac, char** av) {
                 i++;
             }
             args[i] = NULL;
-            if (strchr(args[0], ' ') != 0)
-                args[0] = NULL;
+
             my_pid = fork();
             if (my_pid == -1) {
                 perror("fork");
                 exit(EXIT_FAILURE);
             } else if (my_pid == 0) {
-                {
                     if (execve(args[0], args, environ) == -1) {
                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                         free(buffer);
@@ -61,7 +64,7 @@ int main(int ac, char** av) {
                         exit(EXIT_FAILURE);
                     }
                 }
-            } else {
+            else {
                 wait(&status);
             }
 
