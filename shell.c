@@ -158,7 +158,10 @@ int main(int ac, char **av)
                         }
                         args[i] = NULL;
                         if (strcmp(args[0], "exit") == 0)
-                                break;
+                        {
+                                free(buffer);
+                                exit(EXIT_SUCCESS);
+                        }
                         my_pid = fork();
                         if (my_pid == -1)
                         {
