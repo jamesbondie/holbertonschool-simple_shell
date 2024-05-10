@@ -26,6 +26,18 @@ void _getenv(const char* name, char *args[64])
     }
 }
 
+void _printenv(char **envi)
+{
+        int i = 0;
+        while(envi[i] != NULL)
+                {
+                        printf("%s\n", envi[i]);
+                        i++;
+                }
+}
+
+
+
 void args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
@@ -166,6 +178,17 @@ int main(int ac, char **av)
                                         exit(0);
                                 else if (status_tutan == 512)
                                         exit(2);
+                        }
+                        if (strcmp(args[0], "env") == 0)
+                        {        
+                                
+                                free(buffer);
+                                for(j = 0; j < i; j++)
+                                        free(args[j]);
+                                
+                                _printenv(environ);
+                                exit(EXIT_SUCCESS);
+                                
                         }
                         my_pid = fork();
                         if (my_pid == -1)
