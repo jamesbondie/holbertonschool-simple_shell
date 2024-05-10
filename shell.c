@@ -160,6 +160,8 @@ int main(int ac, char **av)
                         if (strcmp(args[0], "exit") == 0)
                         {
                                 free(buffer);
+                                for (j = 0; j < i; j++)
+                                        free(args[j]);
                                 exit(EXIT_SUCCESS);
                         }
                         my_pid = fork();
