@@ -157,6 +157,8 @@ int main(int ac, char **av)
                                 i++;
                         }
                         args[i] = NULL;
+                        if (strcmp(args[0], "exit") == 0)
+                                break;
                         my_pid = fork();
                         if (my_pid == -1)
                         {
