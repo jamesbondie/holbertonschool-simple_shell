@@ -162,7 +162,10 @@ int main(int ac, char **av)
                                 free(buffer);
                                 for (j = 0; j < i; j++)
                                         free(args[j]);
-                                exit(2);
+                                if (j > 1)
+                                        exit(0);
+                                else if (j == 1)
+                                        exit(2);
                         }
                         my_pid = fork();
                         if (my_pid == -1)
