@@ -157,7 +157,6 @@ int main(int ac, char **av)
                                 i++;
                         }
                         args[i] = NULL;
-                        printf("status:%d\n", status_tutan);
                         if (strcmp(args[0], "exit") == 0)
                         {
                                 free(buffer);
