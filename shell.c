@@ -50,7 +50,7 @@ int main(int ac, char **av)
 {
         pid_t my_pid;
         size_t bufsize = 64;
-        int status;
+        int status, status_tutan = 5;
         char *args[64];
         char *buffer = malloc(bufsize * sizeof(char));
         char *token;
@@ -157,14 +157,15 @@ int main(int ac, char **av)
                                 i++;
                         }
                         args[i] = NULL;
+                        printf("status:%d\n", status_tutan);
                         if (strcmp(args[0], "exit") == 0)
                         {
                                 free(buffer);
                                 for (j = 0; j < i; j++)
                                         free(args[j]);
-                                if (j > 1)
+                                if (status_tutan == 5)
                                         exit(0);
-                                else if (j == 1)
+                                else if (status_tutan == 512)
                                         exit(2);
                         }
                         my_pid = fork();
@@ -195,6 +196,7 @@ int main(int ac, char **av)
                         }
                         else
                         wait(&status);
+                        status_tutan = status;
                         for (j = 0; j < i; j++)
                         free(args[j]);
                 }
