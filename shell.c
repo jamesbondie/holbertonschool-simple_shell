@@ -63,6 +63,7 @@ void execute_command(char *args[64], char *av[])
     pid_t my_pid;
     int status;
     extern char **environ;
+    int status_tutan = 5;
 
     my_pid = fork();
     if (my_pid == -1)
@@ -85,7 +86,13 @@ void execute_command(char *args[64], char *av[])
     else
     {
         wait(&status);
+        
+        
     }
+    status_tutan = status;
+    if (status_tutan == 32512)
+        exit(127);
+    
 }
 
 void handle_exit(char *buffer, char *args[64], int ac, char *av[])
@@ -152,6 +159,7 @@ void process_input(char *buffer, int ac, char *av[])
         handle_env(buffer, args, ac, av);
     }
     execute_command(args, av);
+    
 
     for (j = 0; args[j] != NULL; j++)
         free(args[j]);
@@ -173,6 +181,8 @@ int main(int argc, char **argv)
     while (getline(&buffer, &bufsize, stdin) != -1 && argc > 0)
     {
         process_input(buffer, argc, argv);
+        if (status_tutan == 32512)
+            return(127);
     }
 
     free(buffer);
