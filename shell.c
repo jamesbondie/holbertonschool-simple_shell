@@ -98,6 +98,7 @@ int main(int ac, char **av)
                         i++;
                 }
                 args[i] = NULL;
+                printf("AAAAAAAAAargs[0]:%s\n", args[0]);
                 if (strcmp(args[0], "exit") == 0)
                 {
                         free(buffer);
@@ -131,6 +132,7 @@ int main(int ac, char **av)
                         {
                                 args_writer(args, args[0]);
                         }
+                        printf("AAAAAAAAAargs[0]:%s\n", args[0]);
                         if (execve(args[0], args, environ) == -1)
                         {
                                 fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
