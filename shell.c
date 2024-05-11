@@ -190,15 +190,12 @@ int main(int ac, char **av)
                                 free(buffer);
                                 for(j = 0; j < i; j++)
                                         free(args[j]);
-                                
                                 _printenv(environ);
                                 exit(EXIT_SUCCESS);
                                 
                         }
-                        if (strchr(args[0], '/') == 0)
-                        {
-                                args_writer(args, args[0]);
-                        }
+                        if (strchr(args[0], '.') != 0 && access(args[0], X_OK) != 0)
+                                exit(127);
                         my_pid = fork();
                         if (my_pid == -1)
                         {
@@ -207,6 +204,10 @@ int main(int ac, char **av)
                         }
                         else if (my_pid == 0)
                         {
+                                if (strchr(args[0], '/') == 0)
+                                {
+                                        args_writer(args, args[0]);
+                                }
                                 if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
