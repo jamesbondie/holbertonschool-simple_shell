@@ -50,15 +50,15 @@ void args_writer(char *arv[64], char *code_holder)
         if (access(args[i], X_OK) == 0)
         {
             arv[j] = strdup(args[i]);
-            break;
             j++;
+            break;
         }
         i++;
     }
     free(nese);
 }
 
-void execute_command(char *args[64], char *av[])
+char execute_command(char *args[64], char *av[])
 {
     pid_t my_pid;
     int status;
@@ -80,19 +80,22 @@ void execute_command(char *args[64], char *av[])
         if (execve(args[0], args, environ) == -1)
         {
             fprintf(stderr, "%s: 1: %s: not found\n", av[0], args[0]);
+            
             exit(127);
         }
     }
     else
     {
         wait(&status);
-        
-        
+        status_tutan = status;
     }
-    status_tutan = status;
-    if (status_tutan == 32512)
-        exit(127);
     
+    if (status_tutan == 32512)
+    {
+        exit(127);
+        return (127);
+    }
+    return 0;
 }
 
 void handle_exit(char *buffer, char *args[64], int ac, char *av[])
