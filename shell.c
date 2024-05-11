@@ -174,8 +174,6 @@ int main(int ac, char **av)
                                 i++;
                         }
                         args[i] = NULL;
-                        if (access(args[0], X_OK) != 0)
-                                exit(127);
                         if (strcmp(args[0], "exit") == 0)
                         {
                                 free(buffer);
@@ -197,6 +195,12 @@ int main(int ac, char **av)
                                 exit(EXIT_SUCCESS);
                                 
                         }
+                       if (strchr(args[0], '/') == 0)
+                        {
+                                args_writer(args, args[0]);
+                        }
+                        if (access(args[0], X_OK) != 0)
+                                exit(127);
                         my_pid = fork();
                         if (my_pid == -1)
                         {
@@ -205,10 +209,6 @@ int main(int ac, char **av)
                         }
                         else if (my_pid == 0)
                         {
-                                if (strchr(args[0], '/') == 0)
-                                {
-                                        args_writer(args, args[0]);
-                                }
                                 for (j = 1; j < i; j++)
                                 {
                                         if (strchr(args[j], '.') != 0)
