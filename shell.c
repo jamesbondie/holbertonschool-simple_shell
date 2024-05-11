@@ -195,12 +195,10 @@ int main(int ac, char **av)
                                 exit(EXIT_SUCCESS);
                                 
                         }
-                       if (strchr(args[0], '/') == 0)
+                        if (strchr(args[0], '/') == 0)
                         {
                                 args_writer(args, args[0]);
                         }
-                        if (access(args[0], X_OK) != 0)
-                                exit(127);
                         my_pid = fork();
                         if (my_pid == -1)
                         {
@@ -209,17 +207,12 @@ int main(int ac, char **av)
                         }
                         else if (my_pid == 0)
                         {
-                                for (j = 1; j < i; j++)
-                                {
-                                        if (strchr(args[j], '.') != 0)
-                                                exit(127);
-                                }
                                 if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                                         free(buffer);
                                         for (j = 0; j < i; j++)
-                                        free(args[j]);
+                                                free(args[j]);
                                         exit(EXIT_FAILURE);
                                 }
                         }
@@ -227,7 +220,7 @@ int main(int ac, char **av)
                         wait(&status);
                         status_tutan = status;
                         for (j = 0; j < i; j++)
-                        free(args[j]);
+                                free(args[j]);
                 }
         }
         free(buffer);
