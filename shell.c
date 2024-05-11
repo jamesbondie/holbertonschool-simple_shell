@@ -131,18 +131,13 @@ int main(int ac, char **av)
                         {
                                 args_writer(args, args[0]);
                         }
-                        if (strcmp(args[0], "/usr/bin/cp") == 0)
-                                printf("asdasdasd");
-                        else
+                        if (execve(args[0], args, environ) == -1)
                         {
-                                if (execve(args[0], args, environ) == -1)
-                                {
-                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
-                                        free(buffer);
-                                        for (j = 0; j < i; j++)
-                                        free(args[j]);
-                                        exit(EXIT_FAILURE);
-                                }
+                                fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                free(buffer);
+                                for (j = 0; j < i; j++)
+                                free(args[j]);
+                                exit(127);
                         }
                 }
                 else
