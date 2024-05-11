@@ -51,12 +51,17 @@ void args_writer(char *arv[64], char *code_holder)
         if (access(args[i], X_OK) == 0)
         {
             arv[j] = strdup(args[i]);
-            break;
             j++;
+            break;
         }
         i++;
     }
     free(nese);
+    while (args[j])
+    {
+        free(args[j]);
+        j++;
+    }
 }
 int main(int ac, char **av)
 {
@@ -167,7 +172,7 @@ int main(int ac, char **av)
                                 args[i] = strdup(token);
                                 if (!args[i])
                                 {
-                                        perror("strdup");
+                                        perror("strdup");        
                                         exit(EXIT_FAILURE);
                                 }
                                 token = strtok(NULL, " \n");
@@ -194,20 +199,20 @@ int main(int ac, char **av)
                                 exit(EXIT_SUCCESS);
                                 
                         }
-                        if (strchr(args[0], '.') != 0 && access(args[0], X_OK) != 0)
-                                exit(127);
+                        if (strchr(args[0], '/') == 0)
+                        {
+                                args_writer(args, args[0]);
+                        }
                         my_pid = fork();
                         if (my_pid == -1)
                         {
+                                for (j = 0; j < i; j++)
+                                        free(args[j]);
                                 perror("fork");
                                 exit(EXIT_FAILURE);
                         }
                         else if (my_pid == 0)
-                        {
-                                if (strchr(args[0], '/') == 0)
-                                {
-                                        args_writer(args, args[0]);
-                                }
+                        {      
                                 if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
