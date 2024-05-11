@@ -26,6 +26,19 @@ void _getenv(const char* name, char *args[64])
     }
 }
 
+void space_remover(char *str)
+{
+        int i = 0;
+        int j = 0;
+        int len = strlen(str);
+        for (i = j = 0; i < len; i++)
+        {
+                if (str[i] != ' ')
+                    str[j++] = str[i];
+        }
+        str[j] = '\0';
+}
+
 void _printenv(char **envi)
 {
         int i = 0;
@@ -132,6 +145,7 @@ int main(int ac, char **av)
                 }
                 else if (my_pid == 0)
                 {
+                        space_remover(args[0]);
                         if (strchr(args[0], '/') == 0)
                         {
                                 args_writer(args, args[0]);
