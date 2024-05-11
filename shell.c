@@ -73,8 +73,13 @@ int main(int ac, char **av)
                 exit(EXIT_FAILURE);
         }
         
-        while (getline(&buffer, &bufsize, stdin) != -1 && ac > 0)
+        while (ac > 0)
         {
+                if(getline(&buffer, &bufsize, stdin) == -1)
+                {
+                        free(buffer);
+                        exit(0);
+                }
                 args[0] = NULL;
                 args[1] = NULL;
                 i = 0;
