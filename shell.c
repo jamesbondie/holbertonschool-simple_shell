@@ -38,30 +38,35 @@ void _printenv(char **envi)
 
 
 
-void args_writer(char *arv[64], char *code_holder)
+int args_writer(char *arv[64], char *code_holder)
 {
-    char *args[64];
+    char *argu[64];
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
-        _getenv("PATH", args);
-    while (args[i])
+    _getenv("PATH", argu);
+    while (argu[i])
     {
-        strcat(args[i], "/");
-        strcat(args[i], nese);
-        if (access(args[i], X_OK) == 0)
+        size_t total_length = strlen(argu[i]) + strlen("/") + strlen(nese) + 1; 
+        char *temp = malloc(total_length);
+        if (temp == NULL) {
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
+        strcpy(temp, argu[i]);
+        strcat(temp, "/");
+        strcat(temp, nese);
+        if (access(temp, X_OK) == 0)
         {
-            arv[j] = strdup(args[i]);
+            arv[j] = strdup(temp);
             j++;
+            free(temp);
             break;
         }
+        free(temp);
         i++;
     }
-    free(nese);
-    while (args[j])
-    {
-        free(args[j]);
-        j++;
-    }
+    free(nese); 
+    return 1;
 }
 int main(int ac, char **av)
 {
@@ -126,13 +131,6 @@ int main(int ac, char **av)
                                                 {
                                                         args_writer(args, args[0]);
                                                 }
-                                                for (j = 1; j < i; j++)
-                                                {
-                                                        if (strchr(args[j], '.') != 0)
-                                                        {
-                                                                printf("asdfasf\n");
-                                                        }
-                                                }
                                                 if (execve(args[0], args, environ) == -1)
                                                 {
                                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
@@ -153,7 +151,6 @@ int main(int ac, char **av)
                                         break;
                         }
                 }
-
         else
         {
                 while (getline(&buffer, &bufsize, stdin) != -1)
@@ -181,7 +178,7 @@ int main(int ac, char **av)
                         args[i] = NULL;
                         if (strcmp(args[0], "exit") == 0)
                         {
-                                free(buffer);
+                                free(buffer);        
                                 for (j = 0; j < i; j++)
                                         free(args[j]);
                                 if (status_tutan == 5)
@@ -212,7 +209,7 @@ int main(int ac, char **av)
                                 exit(EXIT_FAILURE);
                         }
                         else if (my_pid == 0)
-                        {      
+                        {
                                 if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
@@ -225,7 +222,7 @@ int main(int ac, char **av)
                         else
                         wait(&status);
                         status_tutan = status;
-                        for (j = 0; j < i; j++)
+                        for (j = 0; args[j] != NULL; j++)
                                 free(args[j]);
                 }
         }
