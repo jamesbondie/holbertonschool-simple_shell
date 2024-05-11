@@ -121,9 +121,14 @@ int main(int ac, char **av)
                                                 {
                                                         args_writer(args, args[0]);
                                                 }
-                                                if (strcmp(args[0], "/usr/bin/cp") == 0)
-                                                        printf("asdasdasd");
-                                                else if (execve(args[0], args, environ) == -1)
+                                                for (j = 1; j < i; j++)
+                                                {
+                                                        if (strchr(args[j], '.') != 0)
+                                                        {
+                                                                printf("asdfasf\n");
+                                                        }
+                                                }
+                                                if (execve(args[0], args, environ) == -1)
                                                 {
                                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                                                         free(buffer);
@@ -202,18 +207,18 @@ int main(int ac, char **av)
                                 {
                                         args_writer(args, args[0]);
                                 }
-                                if (strcmp(args[0], "/usr/bin/cp") == 0)
-                                        printf("asdasdasd");
-                                else
+                                for (j = 1; j < i; j++)
                                 {
-                                        if (execve(args[0], args, environ) == -1)
-                                        {
-                                                fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
-                                                free(buffer);
-                                                for (j = 0; j < i; j++)
-                                                free(args[j]);
-                                                exit(EXIT_FAILURE);
-                                        }
+                                        if (strchr(args[j], '.') != 0)
+                                                printf("asdfasf\n");
+                                }
+                                if (execve(args[0], args, environ) == -1)
+                                {
+                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                        free(buffer);
+                                        for (j = 0; j < i; j++)
+                                        free(args[j]);
+                                        exit(EXIT_FAILURE);
                                 }
                         }
                         else
