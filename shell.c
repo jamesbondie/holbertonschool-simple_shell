@@ -147,5 +147,7 @@ int main(int ac, char **av)
                 free(args[j]);
         }
         free(buffer);
+        if (status_tutan == 32512)
+                return(127);
         return (0);
 }
