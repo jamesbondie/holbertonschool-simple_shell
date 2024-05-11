@@ -1,7 +1,8 @@
 #include "main.h"
+
 void _getenv(const char* name, char *args[64])
 {
-    extern char** environ;
+    char **environ = __environ;
     int j = 0;
     size_t i;
 
@@ -16,7 +17,8 @@ void _getenv(const char* name, char *args[64])
 
             while (token != NULL)
             {
-                args[j] = strdup(token), j++;
+                args[j] = strdup(token);
+                j++;
                 token = strtok(NULL, ":");
             }
             args[j] = NULL;
@@ -28,22 +30,21 @@ void _getenv(const char* name, char *args[64])
 
 void _printenv(char **envi)
 {
-        int i = 0;
-        while(envi[i] != NULL)
-                {
-                        printf("%s\n", envi[i]);
-                        i++;
-                }
+    int i = 0;
+    while(envi[i] != NULL)
+    {
+        printf("%s\n", envi[i]);
+        i++;
+    }
 }
-
-
 
 void args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
-        _getenv("PATH", args);
+    _getenv("PATH", args);
+
     while (args[i])
     {
         strcat(args[i], "/");
@@ -51,13 +52,14 @@ void args_writer(char *arv[64], char *code_holder)
         if (access(args[i], X_OK) == 0)
         {
             arv[j] = strdup(args[i]);
-            break;
             j++;
+            break;
         }
         i++;
     }
     free(nese);
 }
+
 int main(int ac, char **av)
 {
     pid_t my_pid;
@@ -73,59 +75,91 @@ int main(int ac, char **av)
         perror("malloc");
         exit(EXIT_FAILURE);
     }
+
     while (1)
     {
         if (getline(&buffer, &bufsize, stdin) == -1)
         {
             break;
         }
+
         i = 0;
+
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
+
         char *cmd = strdup(buffer);
         char *cmd_token = strtok(cmd, "\n");
+
         while (cmd_token != NULL)
         {
             token = strtok(cmd_token, " \n");
+
             if (token == NULL)
             {
                 break;
             }
+
             i = 0;
 
             while (token != NULL)
             {
                 args[i] = strdup(token);
+
                 if (!args[i])
                 {
                     perror("strdup");
                     exit(EXIT_FAILURE);
                 }
+
                 token = strtok(NULL, " \n");
                 i++;
             }
 
             args[i] = NULL;
+
             if (strcmp(args[0], "exit") == 0)
             {
                 free(buffer);
+
                 for (j = 0; j < i; j++)
                     free(args[j]);
+
                 if (status_tutan == 5)
                     exit(0);
                 else if (status_tutan == 512)
                     exit(2);
             }
+
             if (strcmp(args[0], "env") == 0)
             {
                 free(buffer);
+
                 for(j = 0; j < i; j++)
                     free(args[j]);
-                _printenv(environ);
+
+                _printenv(__environ);
+            }
+            else if (access(args[0], F_OK) == -1)
+            {
+                fprintf(stderr, "%s: 1: %s: not found\n", av[0], args[0]);
+
+                free(buffer);
+
+                for (j = 0; j < i; j++)
+                    free(args[j]);
+
+                exit(127);
             }
             else
             {
+                if (strchr(args[0], '/') == NULL)
+                {
+                    args_writer(args, args[0]);
+                }
+
                 my_pid = fork();
+
                 if (my_pid == -1)
                 {
                     perror("fork");
@@ -133,16 +167,15 @@ int main(int ac, char **av)
                 }
                 else if (my_pid == 0)
                 {
-                    if (strchr(args[0], '/') == 0)
+                    if (execve(args[0], args, __environ) == -1)
                     {
-                        args_writer(args, args[0]);
-                    }
-                    if (execve(args[0], args, environ) == -1)
-                    {
-                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], args[0]);
+
                         free(buffer);
+
                         for (j = 0; j < i; j++)
                             free(args[j]);
+
                         exit(127);
                     }
                 }
@@ -150,15 +183,20 @@ int main(int ac, char **av)
                 {
                     wait(&status);
                     status_tutan = status;
+
                     for (j = 0; j < i; j++)
                         free(args[j]);
                 }
             }
+
             cmd_token = strtok(NULL, "\n");
         }
     }
+
     free(buffer);
+
     if (status_tutan == 32512)
         return 127;
+
     return 0;
 }
