@@ -26,19 +26,6 @@ void _getenv(const char* name, char *args[64])
     }
 }
 
-void space_remover(char *str)
-{
-        int i = 0;
-        int j = 0;
-        int len = strlen(str);
-        for (i = j = 0; i < len; i++)
-        {
-                if (str[i] != ' ')
-                    str[j++] = str[i];
-        }
-        str[j] = '\0';
-}
-
 void _printenv(char **envi)
 {
         int i = 0;
@@ -71,6 +58,21 @@ void args_writer(char *arv[64], char *code_holder)
     }
     free(nese);
 }
+void remove_spaces(char *str) {
+    int count = 0, i;
+    int found_first_letter = 0; 
+    for (i = 0; str[i]; i++) {
+        if (!found_first_letter) {
+            if (str[i] != ' ') {
+                found_first_letter = 1;
+                str[count++] = str[i];
+            }
+        } else {
+            str[count++] = str[i];
+        }
+    }
+    str[count] = '\0';
+}
 int main(int ac, char **av)
 {
         pid_t my_pid;
@@ -87,14 +89,10 @@ int main(int ac, char **av)
         }
         args[0] = NULL;
         args[1] = NULL;
-            
-        while (ac > 0)
+        
+        while (getline(&buffer, &bufsize, stdin) != -1 && ac > 0)
         {
-                if(getline(&buffer, &bufsize, stdin) == -1)
-                {
-                        free(buffer);
-                        exit(EXIT_FAILURE);
-                }
+                remove_spaces(buffer);
                 i = 0;
                 if (buffer[strlen(buffer) - 1] == '\n')
                         buffer[strlen(buffer) - 1] = '\0';
@@ -145,7 +143,6 @@ int main(int ac, char **av)
                 }
                 else if (my_pid == 0)
                 {
-                        space_remover(args[0]);
                         if (strchr(args[0], '/') == 0)
                         {
                                 args_writer(args, args[0]);
