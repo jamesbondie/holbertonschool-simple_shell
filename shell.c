@@ -174,6 +174,8 @@ int main(int ac, char **av)
                                 i++;
                         }
                         args[i] = NULL;
+                        if (access(args[0], X_OK) != 0)
+                                exit(127);
                         if (strcmp(args[0], "exit") == 0)
                         {
                                 free(buffer);
@@ -210,7 +212,7 @@ int main(int ac, char **av)
                                 for (j = 1; j < i; j++)
                                 {
                                         if (strchr(args[j], '.') != 0)
-                                                printf("asdfasf\n");
+                                                exit(127);
                                 }
                                 if (execve(args[0], args, environ) == -1)
                                 {
