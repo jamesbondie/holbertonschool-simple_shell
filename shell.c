@@ -72,14 +72,9 @@ int main(int ac, char **av)
                 perror("malloc");
                 exit(EXIT_FAILURE);
         }
-        
-        while (ac > 0)
+
+        while (getline(&buffer, &bufsize, stdin) != -1 && ac > 0)
         {
-                if(getline(&buffer, &bufsize, stdin) == -1)
-                {
-                        free(buffer);
-                        exit(0);
-                }
                 args[0] = NULL;
                 args[1] = NULL;
                 i = 0;
@@ -115,14 +110,14 @@ int main(int ac, char **av)
                 }
                 if (strcmp(args[0], "env") == 0)
                 {        
-                        
+
                         free(buffer);
                         for(j = 0; j < i; j++)
                                 free(args[j]);
-                        
+
                         _printenv(environ);
                         exit(EXIT_SUCCESS);
-                        
+
                 }
                 my_pid = fork();
                 if (my_pid == -1)
