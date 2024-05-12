@@ -12,8 +12,9 @@ non-interactive:
 [\fB\-\-bits\fR \fIBITS\fR]
 .IR file ...
 .SH DESCRIPTION
-.B corrupt
-modifies files by toggling a randomly chosen bit.
+.B hsh
+- is a command language interpreter that shall execute commands read from a command line string, the standard in both interactive mode and non-interactive mode;
+ input, or a specified file
 .SH OPTIONS
 .TP
 .BR \-n ", " \-\-bits =\fIBITS\fR

@@ -43,7 +43,7 @@ void _printenv(char **envi)
 
 
 
-void args_writer(char *arv[64], char *code_holder)
+void args_writer(char *arv[64], char *code_holder, char *av_tutan)
 {
     char *args[64];
     char *nese = strdup(code_holder);
@@ -51,7 +51,7 @@ void args_writer(char *arv[64], char *code_holder)
         _getenv("PATH", args);
       if(args[i] == NULL)
       {
-              printf("ags\n");
+              fprintf(stderr, "%s: 1: %s: not found\n", av_tutan, code_holder);
               free(nese);
               exit(127);
       }
@@ -147,7 +147,7 @@ int main(int ac, char **av)
                         {
                                 if (strchr(args[0], '/') == 0)
                                 {
-                                        args_writer(args, args[0]);
+                                        args_writer(args, args[0], av[0]);
                                 }
                                 if (execve(args[0], args, environ) == -1)
                                 {
