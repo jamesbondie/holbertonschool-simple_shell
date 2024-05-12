@@ -54,8 +54,8 @@ void args_writer(char *arv[], char *code_holder) {
     _getenv("PATH", args);
     for (i = 0; args[i] != NULL; i++) {
         if (strlen(args[i]) + strlen(nese) + 2 <= 64) {
-            strncat(args[i], "/", 1);
-            strncat(args[i], nese, 64 - strlen(args[i]) - 1);
+            strcat(args[i], "/");
+            strcat(args[i], nese);
             if (access(args[i], X_OK) == 0) {
                 arv[0] = strdup(args[i]);
                 if (arv[0] == NULL) {
@@ -68,6 +68,7 @@ void args_writer(char *arv[], char *code_holder) {
     }
     free(nese);
 }
+
 
 char execute_command(char *args[], char *av[]) {
     pid_t my_pid;
