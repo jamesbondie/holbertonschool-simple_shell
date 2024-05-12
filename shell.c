@@ -95,7 +95,7 @@ int main(int ac, char **av)
                                 perror("strdup");
                                 exit(EXIT_FAILURE);
                         }
-                        token = strtok(NULL, " \n");
+                        token = strtok(NULL, " \t\n");
                         i++;
                 }
                 args[i] = NULL;
