@@ -1,4 +1,6 @@
 .TH SIMPLE_SHELL
+.SH PROLOG
+This manual page is part of the Holberton School Simpler She.
 .SH SHELL
 corrupt \- modify files by randomly changing bits
 .SH SYNOPSIS

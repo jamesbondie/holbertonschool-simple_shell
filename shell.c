@@ -4,10 +4,6 @@ void _getenv(const char* name, char *args[64])
     extern char** environ;
     int j = 0;
     size_t i;
-        if (environ[j] == NULL)
-        {
-                goto END;
-        }
     for (i = 0; environ[i] != NULL; i++)
     {
         char* env_var = strdup(environ[i]);
@@ -27,8 +23,6 @@ void _getenv(const char* name, char *args[64])
         }
         free(env_var);
     }
-        END:
-        i++;
 }
 
 
@@ -50,7 +44,6 @@ void args_writer(char *arv[64], char *code_holder)
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
         _getenv("PATH", args);
-        _getenv("PATH1", args);
       if(args[i] == NULL)
       {
               free(nese);
@@ -68,8 +61,9 @@ void args_writer(char *arv[64], char *code_holder)
         }
         i++;
     }
-    END:
     free(nese);
+    END:
+    i++;
 }
 int main(int ac, char **av)
 {
