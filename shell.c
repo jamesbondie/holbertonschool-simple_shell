@@ -2,7 +2,7 @@
 int custom_getenv(const char* name, char *args[64])
 {
     extern char** environ;
-    int j = 0;
+    int j = 0, a = 0;
     size_t i;
         char *env_var;
         char *token, *zoken;
@@ -16,7 +16,8 @@ int custom_getenv(const char* name, char *args[64])
                 if(token == NULL)
                 {
                         free(env_var);
-                        return 1;
+                        a = 1;
+                        break;
                 }
                 zoken = strtok(token, ":");        
                 fflush(stdout);
@@ -31,7 +32,7 @@ int custom_getenv(const char* name, char *args[64])
         }
         free(env_var);
     }
-        return 0;
+        return a;
 }
 
 
@@ -74,7 +75,7 @@ int main(int ac, char **av)
 {
         pid_t my_pid;
         size_t bufsize = 64;
-        int status, status_tutan = 5, nese = 0, writer_holder;
+        int status, status_tutan = 5, nese = 0;
         char *args[64];
         char *buffer = malloc(bufsize * sizeof(char));
         char *token;
@@ -151,17 +152,9 @@ int main(int ac, char **av)
                                 
                                 if (strchr(args[0], '/') == 0)
                                 {
-                                        writer_holder = args_writer(args, args[0]);
+                                        args_writer(args, args[0]);
                                 }
-                                if (writer_holder == 1)
-                                {
-                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
-                                        free(buffer);
-                                        for (j = 0; j < i; j++)
-                                        free(args[j]);
-                                        exit(127);
-                                }
-                                else if (execve(args[0], args, environ) == -1)
+                                if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                                         free(buffer);
