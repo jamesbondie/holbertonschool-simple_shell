@@ -31,7 +31,7 @@ void remove_spaces(char *str)
     int count = 0, i;
 
     for (i = 0; str[i]; i++) {
-        if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+        if (str[i] != ' ' && str[i] != '\t')
             str[count++] = str[i];
     }
     str[count] = '\0';
