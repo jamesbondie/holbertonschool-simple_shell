@@ -1,4 +1,4 @@
-#include "maini.h"
+#include "main.h"
 void _getenv(const char* name, char *args[64])
 {
     extern char** environ;
