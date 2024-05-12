@@ -65,11 +65,13 @@ int args_writer(char *arv[64], char *code_holder)
         if (access(args[i], X_OK) == 0)
         {
             arv[j] = strdup(args[i]);
+            free(args[i]);    
             break;
             j++;
         }
         i++;
     }
+        
     free(nese);
     return geti;
 }
