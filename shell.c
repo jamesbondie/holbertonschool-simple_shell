@@ -46,7 +46,7 @@ void args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
-    int i = 0, j = 0, fresh= 0;
+    int i = 0, j = 0;
         _getenv("PATH", args);
         _getenv("PATH1", args);
       if(args[i] == NULL)
