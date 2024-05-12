@@ -50,28 +50,41 @@ void _printenv(char **envi)
 
 
 
-int args_writer(char *arv[64], char *code_holder)
-{
+int args_writer(char *arv[64], char *code_holder) {
     char *args[64];
-    char *nese = strdup(code_holder);
-    int i = 0, j = 0, geti = 0;
-        args[0] = NULL;
-        geti = custom_getenv("PATH", args);
+    char *nese;
 
-    while (args[i])
-    {        
-        strcat(args[i], "/");
-        strcat(args[i], nese);
-        if (access(args[i], X_OK) == 0)
+    int i = 0, j = 0, geti = 0;
+        nese = strdup(code_holder);
+            if (nese == NULL) {
+                perror("strdup");
+                return 1; 
+            }
+    args[0] = NULL;
+    geti = custom_getenv("PATH", args);
+
+    while (args[i]) {
+        size_t len = strlen(args[i]) + strlen("/") + strlen(nese) + 1;
+        char *concatenated = malloc(len);
+        if (concatenated == NULL)
         {
-            arv[j] = strdup(args[i]);
-            free(args[i]);    
-            break;
-            j++;
+            perror("malloc");
+            free(nese);
+            return 1; 
         }
+        snprintf(concatenated, len, "%s/%s", args[i], nese);
+        if (access(concatenated, X_OK) == 0) {
+            arv[j] = concatenated;
+            j++;
+            arv[j] = NULL; 
+            free(nese); 
+            return geti;
+        }
+
+        free(concatenated); 
         i++;
     }
-        
+
     free(nese);
     return geti;
 }
@@ -145,14 +158,9 @@ int main(int ac, char **av)
                                 exit(EXIT_SUCCESS);
 
                         }
-                        if (strchr(args[0], '/') == NULL) {
-                            char *result = NULL;
-                            if ((result = strdup(args[0])) == NULL) {
-                                perror("strdup");
-                                exit(EXIT_FAILURE);
-                            }
-                            writer = args_writer(args, result);
-                            free(result); 
+                        if (strchr(args[0], '/') == 0)
+                        {
+                                writer = args_writer(args, args[0]);
                         }
                         my_pid = fork();
                         if (my_pid == -1)
