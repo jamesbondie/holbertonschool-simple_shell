@@ -42,9 +42,9 @@ void _printenv(char **envi)
 void args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
-        args[0] = NULL;
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
+        args[0] = NULL;
         _getenv("PATH", args);
         if (args[i] == NULL)
                 goto END;
