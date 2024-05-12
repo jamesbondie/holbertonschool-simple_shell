@@ -51,7 +51,7 @@ void args_writer(char *arv[64], char *code_holder, char *av_tutan)
         _getenv("PATH", args);
       if(args[i] == NULL)
       {
-              fprintf(stderr, "%s: 1: %s: not found\n", av_tutan, code_holder);
+              fprintf(stderr, ": 1: : not found\n");
               free(nese);
               exit(127);
       }

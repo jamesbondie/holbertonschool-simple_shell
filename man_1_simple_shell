@@ -2,8 +2,8 @@
 .SH PROLOG
 This manual page is part of the Holberton School Simple Shell Project. It can differ from other shell projects due to its simpler functionality.
 .SH SHELL
-interactive:
-./hsh - $[command] [argument]
+interactive: ./hsh - $[command] [argument]
+.br
 non-interactive:
 [command] [argument]
 .SH SYNOPSIS
