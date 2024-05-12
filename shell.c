@@ -12,6 +12,7 @@ int custom_getenv(const char* name, char *args[64])
         token = strtok(env_var, "=");
         if (token != NULL && strcmp(token, name) == 0)
         {
+              a = 0;   
             token = strtok(NULL, "=");
                 if(token == NULL)
                 {
@@ -20,7 +21,6 @@ int custom_getenv(const char* name, char *args[64])
                         break;
                 }
                 zoken = strtok(token, ":");        
-                fflush(stdout);
             while (token != NULL && zoken != NULL)
             {
                 args[j] = strdup(token), j++;
@@ -30,6 +30,8 @@ int custom_getenv(const char* name, char *args[64])
                 free(env_var);
             break;
         }
+        else
+                a = 1;
         free(env_var);
     }
         return a;
