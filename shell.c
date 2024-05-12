@@ -43,7 +43,7 @@ void _printenv(char **envi)
 
 
 
-void args_writer(char *arv[64], char *code_holder, char *av_tutan)
+void args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
@@ -147,7 +147,7 @@ int main(int ac, char **av)
                         {
                                 if (strchr(args[0], '/') == 0)
                                 {
-                                        args_writer(args, args[0], av[0]);
+                                        args_writer(args, args[0]);
                                 }
                                 if (execve(args[0], args, environ) == -1)
                                 {
