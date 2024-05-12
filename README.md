@@ -1,10 +1,10 @@
-# C - Simple Shell Group Work
+# C - Simple Shell Group Work 
 
 
 ## FILES
 
 
-### [README.md0-binary_tree_node.c](./README.md) 
+### [README.md](./README.md) 
 * Info about Simple Shell Repository
 ### [AUTHORS](./AUTHORS) 
 * Authors & Contributors of Simple Shell Repository
@@ -19,13 +19,23 @@
 
 ## Flowchart
 
-<p align="center"><img src="https://github.com/jamesbondie"></p>
+<p align="center"><img src="./flowcchart.png"></p>
 
 
 ## SHELL
 This project is a mini shell implementation which is a command language interpreter that shall execute commands read from a command line string, the standard in both interactive mode and non-interactive mode.  It provides basic command-line interface functionalities such as executing commands, handling environment variables, and displaying environment variables. 
 
 ## ABOUT
+
+The main function is responsible for the overall program flow, including reading user input, processing built-in commands (exit and env), forking child processes, and executing commands. It utilizes the custom_getenv and args_writer functions to handle environment variable retrieval and executable path resolution, respectively.
+
+The custom_getenv function is responsible for retrieving the value of a custom environment variable. It iterates through the environ array, extracts the key-value pairs, and stores the extracted values in the provided args array.
+
+The _printenv function simply prints the contents of the environment variables to the console.
+
+The args_writer function is used to locate the executable for a given command. It retrieves the PATH environment variable, iterates through the directories in the PATH, and checks if the combined path is executable. If a valid executable is found, it stores the path in the provided arv array.
+
+The flow diagram includes detailed explanations for each step, decision point, and function call, providing a comprehensive understanding of the code's logic and structure.
 
 ### Command Execution
 * Executes commands entered by the user.
