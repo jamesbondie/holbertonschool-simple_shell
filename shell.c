@@ -45,7 +45,8 @@ void args_writer(char *arv[64], char *code_holder)
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
         _getenv("PATH", args);
-
+        if (args[i] == NULL)
+                goto END;
     while (args[i])
     {
         strcat(args[i], "/");
@@ -59,6 +60,8 @@ void args_writer(char *arv[64], char *code_holder)
         i++;
     }
     free(nese);
+        END:
+        i++;
 }
 int main(int ac, char **av)
 {

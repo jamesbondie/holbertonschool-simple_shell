@@ -5,7 +5,7 @@ This manual page is part of the Holberton School Simple Shell Project. It can di
 interactive:
 ./hsh - $[command] [argument]
 non-interactive:
-[]
+[command] [argument]
 .SH SYNOPSIS
 .B corrupt
 [\fB\-n\fR \fIBITS\fR]
