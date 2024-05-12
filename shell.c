@@ -134,14 +134,18 @@ int main(int ac, char **av)
                         }
                         if (strcmp(args[0], "env") == 0)
                         {        
-        
+
                                 free(buffer);
                                 for(j = 0; j < i; j++)
                                         free(args[j]);
-        
+
                                 _printenv(environ);
                                 exit(EXIT_SUCCESS);
-        
+
+                        }
+                        if (strchr(args[0], '/') == 0)
+                        {
+                                writer = args_writer(args, args[0]);
                         }
                         my_pid = fork();
                         if (my_pid == -1)
@@ -151,11 +155,7 @@ int main(int ac, char **av)
                         }
                         else if (my_pid == 0)
                         {
-                                
-                                if (strchr(args[0], '/') == 0)
-                                {
-                                        writer = args_writer(args, args[0]);
-                                }
+
                                 if (writer == 1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
