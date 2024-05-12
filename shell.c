@@ -64,6 +64,7 @@ int args_writer(char *arv[64], char *code_holder)
         i++;
     }
     free(nese);
+        return 0;
 }
 int main(int ac, char **av)
 {
