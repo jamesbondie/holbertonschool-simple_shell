@@ -145,9 +145,14 @@ int main(int ac, char **av)
                                 exit(EXIT_SUCCESS);
 
                         }
-                        if (strchr(args[0], '/') == 0)
-                        {
-                                writer = args_writer(args, args[0]);
+                        if (strchr(args[0], '/') == NULL) {
+                            char *result = NULL;
+                            if ((result = strdup(args[0])) == NULL) {
+                                perror("strdup");
+                                exit(EXIT_FAILURE);
+                            }
+                            writer = args_writer(args, result);
+                            free(result); 
                         }
                         my_pid = fork();
                         if (my_pid == -1)
@@ -163,7 +168,7 @@ int main(int ac, char **av)
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                                         free(buffer);
                                         for (j = 0; j < i; j++)
-                                        free(args[j]);
+                                                free(args[j]);
                                         exit(127);
                                 }
                                 else if (execve(args[0], args, environ) == -1)
@@ -171,7 +176,7 @@ int main(int ac, char **av)
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                                         free(buffer);
                                         for (j = 0; j < i; j++)
-                                        free(args[j]);
+                                                free(args[j]);
                                         exit(127);
                                 }
                         }
