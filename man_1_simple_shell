@@ -1,50 +1,54 @@
-.TH SIMPLE_SHELL
-.SH PROLOG
-This manual page is part of the Holberton School Simple Shell Project. It can differ from other shell projects due to its simpler functionality.
+.TH SIMPLE_SHELL 1 "May 2024" "1.1" "Simple Shell Manual"
 .SH NAME
-interactive: ./hsh - $command_string [command_name [argument...]] || [command_file [argument...]]
-.br
-non-interactive:
-[command] [argument]
-.SH OPERANDS
--  A single <hyphen-minus> shall be treated as the first
- operand and then ignored. If both '-' and "--" are
- given as arguments, or if other operands precede the
- single <hyphen-minus>, the results are undefined.
-.I command_file
- The pathname of a file containing commands
-.I command_name
- A string assigned to special parameter 0 when executing
- the commands in command_string.
-.I command_string
-A string that shall be interpreted by the shell as one or more commands including command_name and arguments(if it has).
+simple_shell \- a simple command language interpreter
 .SH SYNOPSIS
-.B ./hsh
-- interactive: ./hsh [command [argument] | command_file [argument...]]
+.B simple_shell
+[\fIcommand [argument]\fR | \fIcommand_file [argument...]\fR]
 .br
-non-interactive:
-[command] [argument]
 .SH DESCRIPTION
-.B hsh
-- is a command language interpreter that shall execute commands read from a command line string, the standard in both interactive mode and non-interactive mode;
- input, or a specified file
-.SH OUTPUT FILES
-None
+\fBsimple_shell\fR is a minimalistic command language interpreter that executes commands read from a command line string or a specified file. It operates in both interactive and non-interactive modes. In interactive mode, users can enter commands directly through the command prompt. In non-interactive mode, commands can be provided via command-line arguments or a file containing commands.
+.PP
+In interactive mode, if the shell is invoked without any arguments, it enters a loop where it continuously prompts the user for commands until an EOF (End-of-File) character is encountered.
+.PP
+In non-interactive mode, the shell executes the specified command or commands from the provided command line or file and exits upon completion.
+.SH OPTIONS
+The following options are supported:
+.TP
+.B \-h, \-\-help
+Display help information and exit.
+.SH OPERANDS
+The following operands are supported:
+.TP
+.B command_file
+The pathname of a file containing commands to be executed by the shell.
+.TP
+.B command_name
+A string representing the name of the command to be executed.
+.TP
+.B command_string
+A string interpreted by the shell as one or more commands, including the command name and any arguments.
 .SH EXIT STATUS
- The following exit values shall be returned:
-
-     0   The script to be executed consisted solely of zero or
-         more blank lines or comments, or both.
-
- 1‐125   A non-interactive shell detected an error other than
-         command_file not found or executable, including but not
-         limited to syntax, redirection, or variable assignment
-         errors.
-
-   127   A specified command_file could not be found by a non-
-         interactive shell.
+The following exit status values are returned:
+.TP
+.B 0
+The script to be executed consisted solely of zero or more blank lines or comments, or both.
+.TP
+.B 1-125
+A non-interactive shell detected an error other than command_file not found or executable, including but not limited to syntax, redirection, or variable assignment errors.
+.TP
+.B 127
+A specified command_file could not be found by a non-interactive shell.
+.SH ENVIRONMENT VARIABLES
+.B simple_shell\fR recognizes the following environment variables:
+.TP
+.B PATH
+A colon-separated list of directories in which the shell searches for executable files specified in commands.
+.SH FILES
+.I simple_shellrc
+System-wide configuration file for the shell, if present.
 .SH AUTHORS
-Written by Tahir Alizade <jamesalfreddie@gmail.com>
+Written by Tahir Alizade <jamesalfreddie@gmail.com>.
 .SH BUG REPORTS
-Report bugs to <jamesalfreddie@gmail.com>
-
+Report bugs to <jamesalfreddie@gmail.com>.
+.SH SEE ALSO
+.BR bash (1)
