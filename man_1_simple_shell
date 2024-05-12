@@ -1,8 +1,11 @@
 .TH SIMPLE_SHELL
 .SH PROLOG
-This manual page is part of the Holberton School Simpler She.
+This manual page is part of the Holberton School Simple Shell Project. It can differ from other shell projects due to its simpler functionality.
 .SH SHELL
-corrupt \- modify files by randomly changing bits
+interactive:
+./hsh - $[command] [argument]
+non-interactive:
+[]
 .SH SYNOPSIS
 .B corrupt
 [\fB\-n\fR \fIBITS\fR]

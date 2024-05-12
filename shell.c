@@ -4,6 +4,7 @@ void _getenv(const char* name, char *args[64])
     extern char** environ;
     int j = 0;
     size_t i;
+
     for (i = 0; environ[i] != NULL; i++)
     {
         char* env_var = strdup(environ[i]);
@@ -44,11 +45,7 @@ void args_writer(char *arv[64], char *code_holder)
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
         _getenv("PATH", args);
-      if(args[i] == NULL)
-      {
-              free(nese);
-              goto END;
-      }
+
     while (args[i])
     {
         strcat(args[i], "/");
@@ -62,8 +59,6 @@ void args_writer(char *arv[64], char *code_holder)
         i++;
     }
     free(nese);
-    END:
-    i++;
 }
 int main(int ac, char **av)
 {
@@ -124,14 +119,14 @@ int main(int ac, char **av)
                         }
                         if (strcmp(args[0], "env") == 0)
                         {        
-        
+
                                 free(buffer);
                                 for(j = 0; j < i; j++)
                                         free(args[j]);
-        
+
                                 _printenv(environ);
                                 exit(EXIT_SUCCESS);
-        
+
                         }
                         my_pid = fork();
                         if (my_pid == -1)
