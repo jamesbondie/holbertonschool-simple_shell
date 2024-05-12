@@ -1,8 +1,14 @@
 #include "main.h"
-void _getenv(const char* name, char *args[64])
+/**
+ * custom_getenv - retrieves the value of a custom environment variable.
+ * @name: the name of the custom environment variable to retrieve.
+ * @args: an array to store the retrieved value, with a maximum size of 64 characters.
+ * Return: a or 1 or 0
+ */
+int custom_getenv(const char* name, char *args[64])
 {
     extern char** environ;
-    int j = 0;
+    int j = 0, a = 0;
     size_t i;
         char *env_var;
         char *token, *zoken;
@@ -12,13 +18,15 @@ void _getenv(const char* name, char *args[64])
         token = strtok(env_var, "=");
         if (token != NULL && strcmp(token, name) == 0)
         {
+              a = 0;   
             token = strtok(NULL, "=");
                 if(token == NULL)
                 {
                         free(env_var);
+                        a = 1;
                         break;
                 }
-                zoken = strtok(token, ":");
+                zoken = strtok(token, ":");        
             while (token != NULL && zoken != NULL)
             {
                 args[j] = strdup(token), j++;
@@ -28,9 +36,17 @@ void _getenv(const char* name, char *args[64])
                 free(env_var);
             break;
         }
+        else
+                a = 1;
         free(env_var);
     }
+        return a;
 }
+
+/**
+ * _printenv - prints the contents of the environment variables.
+ * @envi: a pointer to an array of strings representing the environment variables.
+ */
 void _printenv(char **envi)
 {
         int i = 0;
@@ -42,14 +58,19 @@ void _printenv(char **envi)
 }
 
 
-
+/**
+ * args_writer - writes the contents of an array of strings to a buffer.
+ * @arv: an array of strings to be written to the buffer.
+ * @code_holder: a pointer to the buffer where the contents will be written.
+ * Return: 1
+ */
 int args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
-    int i = 0, j = 0;
+    int i = 0, j = 0, geti = 0;
         args[0] = NULL;
-        _getenv("PATH", args);
+        geti = custom_getenv("PATH", args);
 
     while (args[i])
     {        
@@ -64,18 +85,24 @@ int args_writer(char *arv[64], char *code_holder)
         i++;
     }
     free(nese);
-    return 1;
+    return geti;
 }
+
+/**
+ * main - Entry point of the program.
+ * @ac: Number of command-line arguments passed to the program.
+ * @av: Array of strings containing the command-line arguments.
+ * Return: 0 or 1
+ */
 int main(int ac, char **av)
 {
         pid_t my_pid;
         size_t bufsize = 64;
         int status, status_tutan = 5, nese = 0;
-        char *args[64], *arbi[64];
+        char *args[64];
         char *buffer = malloc(bufsize * sizeof(char));
-        char *yoxlayan = malloc(1024);
         char *token;
-        int i = 0, j, accessin = 0;
+        int i = 0, j, writer = 0;
         if (!buffer)
         {
                 perror("malloc");
@@ -137,49 +164,41 @@ int main(int ac, char **av)
                                 exit(EXIT_SUCCESS);
 
                         }
-                        _getenv("PATH", arbi);
-                        for(j = 0; arbi[j]!=NULL; j++)
+                        my_pid = fork();
+                        if (my_pid == -1)
                         {
-                                sprintf(yoxlayan, "%s%s%s", arbi[j], "/", args[0]);
-                                if (access(yoxlayan, X_OK) == 0)
-                                        accessin = 1;
-                                free(arbi[j]);
+                                perror("fork");
+                                exit(EXIT_FAILURE);
                         }
-                        free(yoxlayan);
-                        if (accessin == 1)
-                        {        my_pid = fork();
-                                if (my_pid == -1)
+                        else if (my_pid == 0)
+                        {
+
+                                if (strchr(args[0], '/') == 0)
                                 {
-                                        perror("fork");
-                                        exit(EXIT_FAILURE);
+                                        writer = args_writer(args, args[0]);
                                 }
-                                else if (my_pid == 0)
+                                if (writer == 1)
                                 {
-                                        if (strchr(args[0], '/') == 0)
-                                        {
-                                                args_writer(args, args[0]);
-                                        }
-                                        if (execve(args[0], args, environ) == -1)
-                                        {
-                                                fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
-                                                free(buffer);
-                                                for (j = 0; j < i; j++)
-                                                free(args[j]);
-                                                exit(127);
-                                        }
+                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                        free(buffer);
+                                        for (j = 0; j < i; j++)
+                                        free(args[j]);
+                                        exit(127);
                                 }
-                                else
-                                wait(&status);
-                                status_tutan = status;
-                                for (j = 0; j < i; j++)
-                                free(args[j]);
+                                else if (execve(args[0], args, environ) == -1)
+                                {
+                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                        free(buffer);
+                                        for (j = 0; j < i; j++)
+                                        free(args[j]);
+                                        exit(127);
+                                }
                         }
                         else
-                        {
-                                fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
-                                free(buffer);
-                                exit(127);
-                        }
+                        wait(&status);
+                        status_tutan = status;
+                        for (j = 0; j < i; j++)
+                        free(args[j]);
                 } 
         }
         free(buffer);
