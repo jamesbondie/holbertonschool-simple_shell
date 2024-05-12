@@ -39,7 +39,7 @@ void _printenv(char **envi)
 
 
 
-void args_writer(char *arv[64], char *code_holder)
+int args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
@@ -47,7 +47,10 @@ void args_writer(char *arv[64], char *code_holder)
         args[0] = NULL;
         _getenv("PATH", args);
         if (args[i] == NULL)
-                goto END;
+        {
+                free(nese);
+                return 0;
+        }
     while (args[i])
     {
         strcat(args[i], "/");
@@ -60,7 +63,6 @@ void args_writer(char *arv[64], char *code_holder)
         }
         i++;
     }
-        END:
     free(nese);
 }
 int main(int ac, char **av)
