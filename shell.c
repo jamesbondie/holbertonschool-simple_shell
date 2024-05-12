@@ -43,8 +43,13 @@ void args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
-    int i = 0, j = 0;
+    int i = 0, j = 0, fresh= 0;
         _getenv("PATH", args);
+        if (args[i] == NULL)
+        {
+                args[i]= strdup("/bin");
+                fresh = 1;
+        }
     while (args[i])
     {
         strcat(args[i], "/");
@@ -57,6 +62,8 @@ void args_writer(char *arv[64], char *code_holder)
         }
         i++;
     }
+        if(fresh == 1)
+                free(args[0]);
     free(nese);
 }
 int main(int ac, char **av)
