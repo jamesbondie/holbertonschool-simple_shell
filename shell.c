@@ -1,5 +1,14 @@
 #include "main.h"
 
+void cleanup_args(char *args[64])
+{
+    int i;
+    for (i = 0; args[i] != NULL; i++)
+    {
+        free(args[i]);
+        args[i] = NULL;
+    }
+}
 void _getenv(const char* name, char *args[64])
 {
     extern char** environ;
@@ -45,13 +54,16 @@ void args_writer(char *arv[64], char *code_holder)
     _getenv("PATH", args);
     while (args[i])
     {
-        strcat(args[i], "/");
-        strcat(args[i], nese);
-        if (access(args[i], X_OK) == 0)
+        if (strlen(args[i]) + strlen(nese) + 2 <= 64)
         {
-            arv[j] = strdup(args[i]);
-            j++;
-            break;
+            strncat(args[i], "/", 1);
+            strncat(args[i], nese, 64 - strlen(args[i]) - 1);
+            if (access(args[i], X_OK) == 0)
+            {
+                arv[j] = strdup(args[i]);
+                j++;
+                break;
+            }
         }
         i++;
     }
@@ -128,7 +140,7 @@ void process_input(char *buffer, int ac, char *av[])
     extern char **environ;
     char *args[64];
     char *token;
-    int i = 0, j;
+    int i = 0;
     (void)ac;
     (void)av;
     args[0] = NULL;
@@ -164,8 +176,8 @@ void process_input(char *buffer, int ac, char *av[])
     execute_command(args, av);
     
 
-    for (j = 0; args[j] != NULL; j++)
-        free(args[j]);
+    
+    cleanup_args(args);
 }
 
 
@@ -192,7 +204,6 @@ int main(int argc, char **argv)
     }
 
     free(buffer);
-
     if (status_tutan == 32512)
         return 127;
 
