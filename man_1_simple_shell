@@ -11,13 +11,7 @@ simple_shell \- a simple command language interpreter
 In interactive mode, if the shell is invoked without any arguments, it enters a loop where it continuously prompts the user for commands until an EOF (End-of-File) character is encountered.
 .PP
 In non-interactive mode, the shell executes the specified command or commands from the provided command line or file and exits upon completion.
-.SH OPTIONS
-The following options are supported:
 .TP
-.B \-h, \-\-help
-Display help information and exit.
-.SH OPERANDS
-The following operands are supported:
 .TP
 .B command_file
 The pathname of a file containing commands to be executed by the shell.
@@ -39,7 +33,7 @@ A non-interactive shell detected an error other than command_file not found or e
 .B 127
 A specified command_file could not be found by a non-interactive shell.
 .SH ENVIRONMENT VARIABLES
-.B simple_shell\fR recognizes the following environment variables:
+.B simple_shell\fR recognizes the environment variables.
 .TP
 .B PATH
 A colon-separated list of directories in which the shell searches for executable files specified in commands.
