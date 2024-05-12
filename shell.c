@@ -4,7 +4,11 @@ void _getenv(const char* name, char *args[64])
     extern char** environ;
     int j = 0;
     size_t i;
-
+        if (environ[j] == NULL)
+        {
+                printf("envi");
+                exit(127);
+        }
     for (i = 0; environ[i] != NULL; i++)
     {
         char* env_var = strdup(environ[i]);
@@ -39,18 +43,18 @@ void _printenv(char **envi)
 
 
 
-void args_writer(char *arv[64], char *code_holder, char *av_tutan)
+void args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
         _getenv("PATH", args);
-        if(args[i] == NULL)
-        {
-                free(nese);
-                fprintf(stderr, "%s: 1: %s: not found\n", av_tutan, code_holder);
-                exit(127);
-        }
+      if(args[i] == NULL)
+      {
+              printf("ags\n");
+              free(nese);
+              exit(127);
+      }
     while (args[i])
     {
         strcat(args[i], "/");
@@ -143,7 +147,7 @@ int main(int ac, char **av)
                         {
                                 if (strchr(args[0], '/') == 0)
                                 {
-                                        args_writer(args, args[0], av[0]);
+                                        args_writer(args, args[0]);
                                 }
                                 if (execve(args[0], args, environ) == -1)
                                 {
