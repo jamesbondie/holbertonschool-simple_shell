@@ -4,25 +4,29 @@ void _getenv(const char* name, char *args[64])
     extern char** environ;
     int j = 0;
     size_t i;
+        char *env_var;
+        char *token, *zoken;
     for (i = 0; environ[i] != NULL; i++)
     {
-        char* env_var = strdup(environ[i]);
-        char* token = strtok(env_var, "=");
-
+        env_var = strdup(environ[i]);
+        token = strtok(env_var, "=");
         if (token != NULL && strcmp(token, name) == 0)
         {
-                if (strcmp(token, "") == 0)
+            token = strtok(NULL, "=");
+                if(token == NULL)
                 {
                         free(env_var);
                         break;
                 }
-            token = strtok(NULL, ":");
-            while (token != NULL)
+                zoken = strtok(token, ":");
+                fflush(stdout);
+            while (token != NULL && zoken != NULL)
             {
                 args[j] = strdup(token), j++;
                 token = strtok(NULL, ":");
             }
             args[j] = NULL;
+                free(env_var);
             break;
         }
         free(env_var);
