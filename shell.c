@@ -81,7 +81,7 @@ int main(int ac, char **av)
                 i = 0;
                 if (buffer[strlen(buffer) - 1] == '\n')
                         buffer[strlen(buffer) - 1] = '\0';
-                token = strtok(buffer, " \t\n");
+                token = strtok(buffer, " \n\t");
                 if (token == NULL)
                 {
                         free(buffer);
@@ -95,7 +95,7 @@ int main(int ac, char **av)
                                 perror("strdup");
                                 exit(EXIT_FAILURE);
                         }
-                        token = strtok(NULL, " \t\n");
+                        token = strtok(NULL, " \n\t");
                         i++;
                 }
                 args[i] = NULL;
