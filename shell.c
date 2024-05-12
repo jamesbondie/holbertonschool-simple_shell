@@ -79,7 +79,7 @@ int main(int ac, char **av)
         char *args[64];
         char *buffer = malloc(bufsize * sizeof(char));
         char *token;
-        int i = 0, j;
+        int i = 0, j, writer = 0;
         if (!buffer)
         {
                 perror("malloc");
@@ -152,9 +152,17 @@ int main(int ac, char **av)
                                 
                                 if (strchr(args[0], '/') == 0)
                                 {
-                                        args_writer(args, args[0]);
+                                        writer = args_writer(args, args[0]);
                                 }
-                                if (execve(args[0], args, environ) == -1)
+                                if (writer == 1)
+                                {
+                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                        free(buffer);
+                                        for (j = 0; j < i; j++)
+                                        free(args[j]);
+                                        exit(127);
+                                }
+                                else if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                                         free(buffer);
