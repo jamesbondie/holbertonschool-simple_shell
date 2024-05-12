@@ -30,6 +30,19 @@ non-interactive:
  input, or a specified file
 .SH OUTPUT FILES
 None
+.SH EXIT STATUS
+ The following exit values shall be returned:
+
+     0   The script to be executed consisted solely of zero or
+         more blank lines or comments, or both.
+
+ 1‐125   A non-interactive shell detected an error other than
+         command_file not found or executable, including but not
+         limited to syntax, redirection, or variable assignment
+         errors.
+
+   127   A specified command_file could not be found by a non-
+         interactive shell.
 .SH AUTHORS
 Written by Tahir Alizade <jamesalfreddie@gmail.com>
 .SH BUG REPORTS
