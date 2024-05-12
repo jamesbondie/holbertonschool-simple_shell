@@ -186,6 +186,9 @@ int main(int argc, char **argv)
         process_input(buffer, argc, argv);
         if (status_tutan == 32512)
             return(127);
+        free(buffer);
+        buffer = malloc(bufsize * sizeof(char));
+
     }
 
     free(buffer);
