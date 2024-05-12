@@ -1,14 +1,34 @@
 #include "main.h"
+int _path(const char *name)
+{
+        int i = 0;
+        extern char **environ;
+        char* env_var = NULL;
+        char* token;
+        while (environ[i] != NULL)
+        {
+                env_var = strdup(environ[i]);
+                token = strtok(env_var, "=");
+                if(token != NULL && strcmp(name, token) == 0)
+                {
+                        token = strtok(env_var, "=");
+                        if (token == NULL)
+                        {
+                                free(env_var);
+                                return 1;
+                        }
+                }
+                i++;
+        }
+        if(env_var != NULL)
+                free(env_var);
+        return 0;
+}
 void _getenv(const char* name, char *args[64])
 {
     extern char** environ;
     int j = 0;
     size_t i;
-        if (environ[j] == NULL)
-        {
-                printf("envi");
-                exit(127);
-        }
     for (i = 0; environ[i] != NULL; i++)
     {
         char* env_var = strdup(environ[i]);
@@ -48,13 +68,8 @@ void args_writer(char *arv[64], char *code_holder)
     char *args[64];
     char *nese = strdup(code_holder);
     int i = 0, j = 0;
+        args[0] = NULL;
         _getenv("PATH", args);
-      if(args[i] == NULL)
-      {
-              fprintf(stderr, ": 1: : not found\n");
-              free(nese);
-              exit(127);
-      }
     while (args[i])
     {
         strcat(args[i], "/");
@@ -73,7 +88,7 @@ int main(int ac, char **av)
 {
         pid_t my_pid;
         size_t bufsize = 64;
-        int status, status_tutan = 5, nese = 0;
+        int status, status_tutan = 5, nese = 0, path_tutan;
         char *args[64];
         char *buffer = malloc(bufsize * sizeof(char));
         char *token;
@@ -145,9 +160,12 @@ int main(int ac, char **av)
                         }
                         else if (my_pid == 0)
                         {
+                                
                                 if (strchr(args[0], '/') == 0)
                                 {
-                                        args_writer(args, args[0]);
+                                        path_tutan = _path("PATH");
+                                        if(path_tutan != 1)
+                                                args_writer(args, args[0]);
                                 }
                                 if (execve(args[0], args, environ) == -1)
                                 {

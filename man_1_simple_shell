@@ -1,25 +1,35 @@
 .TH SIMPLE_SHELL
 .SH PROLOG
 This manual page is part of the Holberton School Simple Shell Project. It can differ from other shell projects due to its simpler functionality.
-.SH SHELL
-interactive: ./hsh - $[command] [argument]
+.SH NAME
+interactive: ./hsh - $command_string [command_name [argument...]] || [command_file [argument...]]
 .br
 non-interactive:
 [command] [argument]
+.SH OPERANDS
+-  A single <hyphen-minus> shall be treated as the first
+ operand and then ignored. If both '-' and "--" are
+ given as arguments, or if other operands precede the
+ single <hyphen-minus>, the results are undefined.
+.I command_file
+ The pathname of a file containing commands
+.I command_name
+ A string assigned to special parameter 0 when executing
+ the commands in command_string.
+.I command_string
+A string that shall be interpreted by the shell as one or more commands including command_name and arguments(if it has).
 .SH SYNOPSIS
-.B corrupt
-[\fB\-n\fR \fIBITS\fR]
-[\fB\-\-bits\fR \fIBITS\fR]
-.IR file ...
+.B ./hsh
+- interactive: ./hsh [command [argument] | command_file [argument...]]
+.br
+non-interactive:
+[command] [argument]
 .SH DESCRIPTION
 .B hsh
 - is a command language interpreter that shall execute commands read from a command line string, the standard in both interactive mode and non-interactive mode;
  input, or a specified file
-.SH OPTIONS
-.TP
-.BR \-n ", " \-\-bits =\fIBITS\fR
-Set the number of bits to modify.
-Default is one bit.
+.SH OUTPUT FILES
+None
 .SH AUTHORS
 Written by Tahir Alizade <jamesalfreddie@gmail.com>
 .SH BUG REPORTS
