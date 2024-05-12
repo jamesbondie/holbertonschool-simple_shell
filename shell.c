@@ -82,6 +82,10 @@ int main(int ac, char **av)
                         free(buffer);
                         continue;
                 }
+                if (nese == -1)
+                {
+                        break;
+                }
                         args[0] = NULL;
                                 args[1] = NULL;
                                 i = 0;
