@@ -26,16 +26,6 @@ void _getenv(const char* name, char *args[64])
     }
 }
 
-void remove_spaces(char *str)
-{
-    int count = 0, i;
-
-    for (i = 0; str[i]; i++) {
-        if (str[i] != ' ' && str[i] != '\t')
-            str[count++] = str[i];
-    }
-    str[count] = '\0';
-}
 
 void _printenv(char **envi)
 {
@@ -86,13 +76,12 @@ int main(int ac, char **av)
 
         while (getline(&buffer, &bufsize, stdin) != -1 && ac > 0)
         {
-                remove_spaces(buffer);
                 args[0] = NULL;
                 args[1] = NULL;
                 i = 0;
                 if (buffer[strlen(buffer) - 1] == '\n')
                         buffer[strlen(buffer) - 1] = '\0';
-                token = strtok(buffer, " \n");
+                token = strtok(buffer, " \t\n");
                 if (token == NULL)
                 {
                         free(buffer);
