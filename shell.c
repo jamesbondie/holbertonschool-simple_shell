@@ -73,8 +73,9 @@ int main(int ac, char **av)
         int status, status_tutan = 5, nese = 0;
         char *args[64], *arbi[64];
         char *buffer = malloc(bufsize * sizeof(char));
+        char *yoxlayan = malloc(1024);
         char *token;
-        int i = 0, j;
+        int i = 0, j, accessin = 0;
         if (!buffer)
         {
                 perror("malloc");
@@ -139,34 +140,46 @@ int main(int ac, char **av)
                         _getenv("PATH", arbi);
                         for(j = 0; arbi[j]!=NULL; j++)
                         {
+                                sprintf(yoxlayan, "%s%s%s", arbi[j], "/", args[0]);
+                                if (access(yoxlayan, X_OK) == 0)
+                                        accessin = 1;
                                 free(arbi[j]);
                         }
-                        my_pid = fork();
-                        if (my_pid == -1)
-                        {
-                                perror("fork");
-                                exit(EXIT_FAILURE);
-                        }
-                        else if (my_pid == 0)
-                        {
-                                if (strchr(args[0], '/') == 0)
+                        free(yoxlayan);
+                        if (accessin == 1)
+                        {        my_pid = fork();
+                                if (my_pid == -1)
                                 {
-                                        args_writer(args, args[0]);
+                                        perror("fork");
+                                        exit(EXIT_FAILURE);
                                 }
-                                if (execve(args[0], args, environ) == -1)
+                                else if (my_pid == 0)
                                 {
-                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
-                                        free(buffer);
-                                        for (j = 0; j < i; j++)
-                                        free(args[j]);
-                                        exit(127);
+                                        if (strchr(args[0], '/') == 0)
+                                        {
+                                                args_writer(args, args[0]);
+                                        }
+                                        if (execve(args[0], args, environ) == -1)
+                                        {
+                                                fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                                free(buffer);
+                                                for (j = 0; j < i; j++)
+                                                free(args[j]);
+                                                exit(127);
+                                        }
                                 }
+                                else
+                                wait(&status);
+                                status_tutan = status;
+                                for (j = 0; j < i; j++)
+                                free(args[j]);
                         }
                         else
-                        wait(&status);
-                        status_tutan = status;
-                        for (j = 0; j < i; j++)
-                        free(args[j]);
+                        {
+                                fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                free(buffer);
+                                exit(127);
+                        }
                 } 
         }
         free(buffer);
