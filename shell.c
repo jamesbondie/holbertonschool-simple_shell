@@ -1,5 +1,5 @@
 #include "main.h"
-void _getenv(const char* name, char *args[64], char *av_tutan, char *code_holder)
+int custom_getenv(const char* name, char *args[64])
 {
     extern char** environ;
     int j = 0;
@@ -15,11 +15,10 @@ void _getenv(const char* name, char *args[64], char *av_tutan, char *code_holder
             token = strtok(NULL, "=");
                 if(token == NULL)
                 {
-                        fprintf(stderr, "%s: 1: %s: not found\n", av_tutan, code_holder);
                         free(env_var);
-                        exit(127);
+                        return 1;
                 }
-                zoken = strtok(token, ":");
+                zoken = strtok(token, ":");        
                 fflush(stdout);
             while (token != NULL && zoken != NULL)
             {
@@ -32,6 +31,7 @@ void _getenv(const char* name, char *args[64], char *av_tutan, char *code_holder
         }
         free(env_var);
     }
+        return 0;
 }
 
 
@@ -47,13 +47,13 @@ void _printenv(char **envi)
 
 
 
-int args_writer(char *arv[64], char *code_holder, char *av_tutan)
+int args_writer(char *arv[64], char *code_holder)
 {
     char *args[64];
     char *nese = strdup(code_holder);
-    int i = 0, j = 0;
+    int i = 0, j = 0, geti = 0;
         args[0] = NULL;
-        _getenv("PATH", args, av_tutan, code_holder);
+        geti = custom_getenv("PATH", args);
 
     while (args[i])
     {        
@@ -68,13 +68,13 @@ int args_writer(char *arv[64], char *code_holder, char *av_tutan)
         i++;
     }
     free(nese);
-    return 1;
+    return geti;
 }
 int main(int ac, char **av)
 {
         pid_t my_pid;
         size_t bufsize = 64;
-        int status, status_tutan = 5, nese = 0;
+        int status, status_tutan = 5, nese = 0, writer_holder;
         char *args[64];
         char *buffer = malloc(bufsize * sizeof(char));
         char *token;
@@ -151,9 +151,17 @@ int main(int ac, char **av)
                                 
                                 if (strchr(args[0], '/') == 0)
                                 {
-                                        args_writer(args, args[0], av[0]);
+                                        writer_holder = args_writer(args, args[0]);
                                 }
-                                if (execve(args[0], args, environ) == -1)
+                                if (writer_holder == 1)
+                                {
+                                        fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
+                                        free(buffer);
+                                        for (j = 0; j < i; j++)
+                                        free(args[j]);
+                                        exit(127);
+                                }
+                                else if (execve(args[0], args, environ) == -1)
                                 {
                                         fprintf(stderr, "%s: 1: %s: not found\n", av[0], buffer);
                                         free(buffer);
