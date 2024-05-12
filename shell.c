@@ -11,8 +11,12 @@ void _getenv(const char* name, char *args[64])
 
         if (token != NULL && strcmp(token, name) == 0)
         {
+                if (strcmp(token, "") == 0)
+                {
+                        free(env_var);
+                        break;
+                }
             token = strtok(NULL, ":");
-
             while (token != NULL)
             {
                 args[j] = strdup(token), j++;
