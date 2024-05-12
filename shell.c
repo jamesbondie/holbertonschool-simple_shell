@@ -6,7 +6,7 @@ void _getenv(const char* name, char *args[64])
     size_t i;
         if (environ[j] == NULL)
         {
-                exit(127);
+                goto END;
         }
     for (i = 0; environ[i] != NULL; i++)
     {
@@ -27,6 +27,8 @@ void _getenv(const char* name, char *args[64])
         }
         free(env_var);
     }
+        END:
+        i++;
 }
 
 
@@ -52,7 +54,7 @@ void args_writer(char *arv[64], char *code_holder)
       if(args[i] == NULL)
       {
               free(nese);
-              exit(127);
+              goto END;
       }
     while (args[i])
     {
@@ -66,6 +68,7 @@ void args_writer(char *arv[64], char *code_holder)
         }
         i++;
     }
+    END:
     free(nese);
 }
 int main(int ac, char **av)
